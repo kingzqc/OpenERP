@@ -1,0 +1,122 @@
+{% extends 'xadmin/base_site.html' %}
+{% load i18n l10n %}
+
+
+{% block content %}
+<html>
+<body lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Echart Testing</title>
+</head>
+<body>
+<script src="/echarts.js"></script>
+<script type="text/javascript" charset="utf8" src="/jquery-1.4.4.min.js"></script>
+
+<div style="border:2px solid #a6e1ec;width:49%;height:450px;float:left" id="main"></div>
+
+<script type="text/javascript">
+	// echartss的标准格式，属性可以去官网查看
+    var myChart = echarts.init(document.getElementById('main'));
+    myChart.setOption({
+        //color: [ '#00FFFF', '#00FF00', '#FFFF00', '#FF8C00', '#FF0000', '#FE8463'], // 自定义echarts的颜色
+        title: { // 标题
+            text: 'cityinfo',
+            subtext: 'just-test',
+            x: 'center'
+        },
+        tooltip: { // 提示框组件
+            trigger: 'item',
+            formatter: '{a}</br>{b}: {c}({d}%)'
+        },
+        legend: {  // 图例组件
+            orient: 'vertical',
+            x: 'left',
+            data: []
+        },
+        toolbox: {  // 工具栏
+            show: true,
+            feature: {
+                mark: {show: true},
+                dataView: {show: true, readOnly: false},
+                magicType: {
+                    show: true,
+                    type: ['pie', 'funnel'],
+                    option: {
+                        funnel: {
+                            x: '25%',
+                            width: '50%',
+                            funnelAlign: 'center',
+                            max: 1548
+                        }
+                    }
+                },
+                restore: {show: true},
+                saveAsImage: {show: true}
+            },
+        },
+        calculable: true,
+        series: [{ // 设置图形种类，常用的有pie(饼状图),bar(柱状体)，line(折线图)
+            name: 'city',
+            type: 'pie',
+            radius: '55%',
+            center: ['50%', '60%'],
+            itemStyle: {
+                normal: {
+                    label: {show: true},
+                    labelLine: {
+                        show: true
+                    },
+                    color: function (value) { // 随机生成颜色(官网的默认颜色比较low，生成的也不怎么样)
+                        return "#" + ("00000" + ((Math.random() * 16777215 + 0.5) >> 0).toString(16)).slice(-6);
+                    }
+                },
+                emphasis: {
+                    label: {
+                        show: true,
+                        position: 'center',
+                        textStyle: {
+                            fontSize: '20',
+                            fontWeight: 'bold'
+                        }
+                    }
+                }
+            },
+            data: []
+        }]
+    });
+    myChart.showLoading();
+    var names = [];
+    var brower = [];
+    $.ajax({ // ajax的方式动态获取后端代码
+        type: 'get',
+        url: 'http://127.0.0.1:9000/xadmin/echarthtmlpage/',
+        dataType: 'json',
+        success: function (result) {
+            $.each(result.data, function (index, item) {
+                names.push(item.name);
+                brower.push({
+                    value: item.count,
+                    name: item.name
+                });
+            });
+            myChart.hideLoading();
+            myChart.setOption({
+                legend: {
+                    data: names
+                },
+                series: [{
+                    data: brower
+                }]
+            });
+        },
+        error: function (errormsg) {
+            alert('errormsg');
+            myChart.hideLoading();
+        }
+    });
+
+</script>
+</body>
+</html>
+{% endblock %}

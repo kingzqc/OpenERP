@@ -1,0 +1,45 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<title> Thinkin PSM Website  | Agenda</title>
+<link href="/static/base/static/css/bootstrap.css" rel='stylesheet' type='text/css' />
+<link href="/static/base/static/css/style.css" rel='stylesheet' type='text/css' />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+<script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
+<!---calender-style---->
+<link rel="stylesheet" href="/static/base/static/css/jquery-ui.css" />
+<script src="/static/base/static/jsweb/jquery.min.js"></script>
+<script src="/static/base/static/js/bootstrap.min.js"></script>
+<!---//calender-style---->
+</head>
+<body>
+	<!--start menu-->
+	{% include "nav-top.html" %}
+    <!--start menu-->
+<div class="main">
+    {% for agendatop in agendatop_list %}
+    <div class="about_banner_img"><img src="{{ agendatop.image }}" class="img-responsive" alt=""/>
+    </div>
+     <div class="about_banner_wrap">
+        <h1 class="m_11">{{ agendatop.subject }}</h1>
+     </div>
+    {% endfor %}
+	<div class="border">
+	</div>
+    <div class="classes-wrapper">
+	<!--start monthly calendar-->
+	{% include "monthlyagenda.html" %}
+    <!--end monthly calendar-->
+    </div>
+</div> <!-- end main -->
+    {% include "nav-footer.html" %}
+<script>
+    var nowdate = new Date()<!--获得日期数据-->
+    $.ajaxSetup({
+        data: {csrfmiddlewaretoken: '{{ csrf_token }}'},
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,56 @@
+
+<!DOCTYPE HTML>
+<html>
+<head>
+<title>Thinkin PSM Website | Myself</title>
+<link href="/static/base/static/css/bootstrap.css" rel='stylesheet' type='text/css' />
+<link href="/static/base/static/css/style.css" rel='stylesheet' type='text/css' />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+<script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
+<script src="/static/base/static/jsweb/jquery.min.js"></script>
+</head>
+<body>
+ <!--start menu-->
+	{% include "nav-top.html" %}
+    <!--start menu-->
+ <div class="main">
+   {% if request.user.is_authenticated %}
+       	<div class="border">
+	    </div>
+       <div class="classes-wrapper">
+       <!--start buttons-->
+       <div class="btn-toolbar" role="toolbar">
+            <div class="btn-group">
+            <button type="button" class="btn btn-default" onclick="javascript:window.location.href='{% url 'editprofile' %}?user_dummy={{ user_dummy }}';">本人</button>
+            </div>
+           <div class="btn-group">
+            <button type="button" class="btn btn-default" onclick="javascript:window.location.href='{% url 'requestlist' %}?user_dummy={{ user_dummy }}';">日程</button>
+            </div>
+            <div class="btn-group">
+            <button type="button" class="btn btn-default" onclick="javascript:window.location.href='{% url 'resourcelist' %}?user_dummy={{ user_dummy }}';">资源</button>
+            </div>
+           <div class="btn-group">
+            <button type="button" class="btn btn-default" onclick="javascript:window.location.href='{% url 'servicelist' %}?resource_dummy={{ user_dummy }}';">服务</button>
+            </div>
+           <div class="btn-group">
+            <button type="button" class="btn btn-default" onclick="javascript:window.location.href='{% url 'resultlist' %}?user_dummy={{ user_dummy }}';">业务</button>
+            </div>
+       </div><!--end buttons-->
+        <!--start monthly calendar-->
+        {% include "monthlyagenda.html" %}
+        <!--end monthly calendar-->
+		</div>
+   {% else %}
+     <div class="col-md-4">
+         <div class="login-page">
+             <span style="color: coral">{{ msg }}</span>
+             <div class="clear"></div>
+          </div>
+     </div>
+   {% endif %}
+ </div> <!-- end main -->
+    {% include "nav-footer.html" %}
+</body>
+</html>

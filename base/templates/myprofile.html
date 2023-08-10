@@ -1,0 +1,126 @@
+
+<!DOCTYPE HTML>
+<html>
+<head>
+<title>Thinkin PSM Website | Myprofile</title>
+<link href="/static/base/static/css/bootstrap.css" rel='stylesheet' type='text/css' />
+<link href="/static/base/static/css/style.css" rel='stylesheet' type='text/css' />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+<script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
+<script src="/static/base/static/jsweb/jquery.min.js"></script>
+</head>
+<body>
+ <!--start menu-->
+	{% include "nav-top.html" %}
+    <!--end  menu-->
+ <div class="main">
+  <div class="about_banner_img"><img src="/medias/static/base/static/website/image/Picture_148492.jpg" class="img-responsive" alt=""/>
+	   		</div>
+		 <div class="about_banner_wrap">
+      	    <h1 class="m_11">本人</h1>
+		 </div>
+          <div class="login_top">
+          	<div class="container">
+             <form action="/editprofile/?user_dummy={{ userdummy }}" method="post" name="myprofile_form" id="myprofile_form" enctype="multipart/form-data">
+             {% csrf_token %}
+			  <div class="col-md-6">
+				 <div class="login-page">
+					<h4 class="title">{{ myprofile_form.username }}基本信息 </h4>
+                     <div id="myprofile_formbox" class="loginbox">
+                         <fieldset class="input">
+                                    {% if myprofile_form.image  %}
+                                        <p id="myprofile_form-image">
+                                        <img src="{{ imageurl }}" class="img-rounded img-circle" alt="" style="width: 240px; height: 240px">
+                                        <a style="display: none">{{ imageurl }}</a>
+                                        </p>
+                                        <p>
+                                        <label>更换头像*</label>
+                                            {{ myprofile_form.image }}
+                                            <span style="color: coral">{{ msg.image.0}}</span>
+                                        </p>
+                                    {% else %}
+                                        <p id="myprofile_form-image">
+                                        <label>添加头像*</label>
+                                           {{ myprofile_form.image }}
+                                         <span style="color: coral">{{ msg.image.0}}</span>
+                                        </p>
+                                    {% endif %}
+                         <p id="myprofile_form-firstname">
+                                  <label for="first_name">名字</label>
+                                     {{ myprofile_form.first_name }}
+                                     <span style="color: coral">{{ myprofile_form.msg.first_name.0}}</span>
+                         </p>
+                         <p id="myprofile_form-lastname">
+                                  <label for="last_name">姓氏</label>
+                                     {{ myprofile_form.last_name }}
+                                     <span style="color: coral">{{ myprofile_form.msg.last_name.0}}</span>
+                         </p>
+                          <p id="myprofile_form-birthday">
+                                  <label for="birthday">出生</label>
+                                     {{ myprofile_form.birthday|safe }}
+                                     <span style="color: coral">{{ myprofile_form.msg.birthday.0}}</span>
+                         </p>
+                         <p id="myprofile_form-nickname">
+                                  <label for="nick_name">昵称</label>
+                                     {{ myprofile_form.nick_name }}
+                                     <span style="color: coral">{{ myprofile_form.msg.nick_name.0}}</span>
+                         </p>
+                          <p id="myprofile_form-email">
+                                  <label for="email">邮件</label>
+                                     {{ myprofile_form.email }}
+                                     <span style="color: coral">{{ myprofile_form.msg.email.0}}</span>
+                         </p>
+                           <p id="myprofile_form-cellphone">
+                                  <label for="cellphone">手机</label>
+                                     {{ myprofile_form.cellphone }}
+                                     <span style="color: coral">{{ myprofile_form.msg.cellphone.0}}</span>
+                         </p>
+	                    </fieldset>
+                     </div>
+					 <div class="clear"></div>
+				  </div>
+				</div> <!-- wnd md-6 -->
+				<div class="col-md-6">
+				 <div class="login-page">
+				  <div class="login-title">
+	           		<h4 class="title">修改密码</h4>
+					<div id="myprofile_formbox" class="loginbox">
+						  <fieldset class="input">
+						    <p id="myprofile_form-password1">
+						      <label for="password">新设密码</label>
+						         {{ myprofile_form.password1}}
+                                 <span style="color: coral">{{ myprofile_form.msg.password1.0}}</span>
+						    </p>
+						    <p id="myprofile_form-password2">
+						      <label for="password2">重复密码</label>
+						      {{ myprofile_form.password2 }}
+                                 <span style="color: coral">{{ myprofile_form.msg.password2.0}}</span>
+						    </p>
+						    <div class="remember">
+                                {% for error in  msg %}
+                                    <span style="color: coral">{{ error }}</span>
+                                {% endfor %}
+                                {% for message in  messages %}
+                                    <span style="color: coral">{{ message }}</span>
+                                {% endfor %}
+							    <input type="submit" name="Submit" class="button" value="保存"><div class="clear"></div>
+							 </div>
+						  </fieldset>
+					</div>
+			      </div>
+				</div>
+				<div class="clear"></div>
+			  </div> <!-- md-6 -->
+             </form>
+			</div>
+		  </div>
+         </div> <!-- end main -->
+</body>
+</html>
+<script>
+  $(function() {
+    $( "#id_birthday" ).datepicker();
+  });
+  </script>

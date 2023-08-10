@@ -1,0 +1,103 @@
+
+<!DOCTYPE HTML>
+<html>
+<head>
+<title>Thinkin PSM Website | Login</title>
+<link href="/static/base/static/css/bootstrap.css" rel='stylesheet' type='text/css' />
+<link href="/static/base/static/css/style.css" rel='stylesheet' type='text/css' />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+<script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
+<script src="/static/base/static/jsweb/jquery.min.js"></script>
+</head>
+<body>
+ <!--start menu-->
+	{% include "nav-top.html" %}
+    <!--start menu-->
+       <div class="main">
+          <div class="login_top">
+          	<div class="container">
+                <div class="col-md-6">
+				 <div class="login-page">
+					<h4 class="title">新用户</h4>
+					<p>登录视为您已同意服务协议、服务条款、隐私政策</p>
+					<div class="button1">
+					   <a href="/register/"><input type="submit" name="Submit" value="创建账号"></a>
+					 </div>
+					 <div class="clear"></div>
+				  </div>
+				</div>
+				<div class="col-md-6">
+				 <div class="login-page">
+				  <div class="login-title">
+	           		<h4 class="title">已注册用户</h4>
+					<p id="loginbox" class="login_details">
+						<form action="/login/" method="post" name="login_form" id="login-form">
+                          {% csrf_token %}
+						  <fieldset class="input">
+						    <div id="login-form-username">
+						      <label for="modlgn_username">用户名</label>
+                                {{ login_form.username }}
+                                <span style="color: coral">{{ login_form.msg.username.0}}</span>
+						    </div>
+						    <div id="login-form-password">
+						      <label for="modlgn_passwd">密码</label>
+                                {{ login_form.password }}
+                                <span style="color: coral">{{ login_form.msg.password.0}}</span>
+						    </div>
+                    <!-- PSM add -->
+                        <div id="id_captcha_100">
+                        <label for="modlgn_captcha">验证码</label>
+                        {{ login_form.captcha }}
+                        {% for error in login_form.captcha.errors %}
+                        <p id="error_{{forloop.counter}}_{{field.auto_id}}" style="color:red" class="text-danger help-block">{{error}}</p>
+                        {% endfor %}
+                        </div> <!-- end captcha 100 -->
+                     <!-- PSM end -->
+                            <div style="color: red" id="Loginmsg">{{ msg }}</div>
+						    <div class="remember">
+							      <label for="modlgn_remember"><a href="/forgotpassword/">忘记密码 ? </a></label>
+							    <input type="submit" name="Submit" class="button" value="登录"><div class="clear"></div>
+                            </div>
+						   </fieldset>
+                          {% csrf_token %}
+						 </form>
+                    </p> <!-- end login box -->
+					</div>
+			      </div> <!-- end login page -->
+				</div><!-- end md-6 -->
+				<div class="clear"></div>
+			  </div> <!-- end container -->
+			</div><!-- end login top -->
+         </div> <!-- end main -->
+<script type="text/javascript">
+<!-- PSM add -->
+document.getElementById('id_username').focus()
+$(function () {
+    $("#id_captcha_1").addClass("form-control input-lg").css({"width": "200px", "display": "inline-block", "margin-left":"15px", "height": "40px"}).attr("placeholder", "请输入验证码");
+    // 图片验证码点击刷新事件,以下是新增行
+    $("#id_captcha_100 img").click(function () {
+      $.get("/captcha/refresh/", function (data) {
+        if (data.key != "") {
+          $("#id_captcha_100 img").attr("src", data.image_url);
+          $("#id_captcha_0").attr("value", data.key);
+        }
+      })
+    })
+})
+document.getElementById('id_username').focus()
+// 动态更改链接
+        function  changeusername(obj){
+                 var change_username = $("#id_username").val();
+                 var linkurl = document.getElementById("id_linkurl");
+                 console.log(change_username);
+                 if(change_username.length < 5 ){
+                     layer.msg('字符数太短，最少5位', {time: 3000, icon: 7});
+                     return
+                 }
+                 linkurl.href = "/activeuser/" + change_username +"/" //重新拼接URL
+        }
+</script>
+</body>
+</html>

@@ -1,0 +1,130 @@
+
+<!DOCTYPE HTML>
+<html>
+<head>
+<title>Thinkin PSM Website  | Classes</title>
+<link href="/static/base/static/css/bootstrap.css" rel='stylesheet' type='text/css' />
+<link href="/static/base/static/css/style.css" rel='stylesheet' type='text/css' />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+<script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
+<script src="/static/base/static/jsweb/jquery.min.js"></script>
+<!-- grid-slider -->
+<script type="text/javascript" src="/static/base/static/jsweb/jquery.mousewheel.js"></script>
+<script type="text/javascript" src="/static/base/static/jsweb/jquery.contentcarousel.js"></script>
+<!-- //grid-slider -->
+<!---calender-style---->
+<link rel="stylesheet" href="/static/base/static/css/jquery-ui.css" />
+<!---//calender-style---->
+</head>
+<body>
+<!--start menu-->
+	{% include "nav-top.html" %}
+    <!--start menu-->
+	<div class="main">
+    {% for resourcetop in resourcetop_list %}
+       		<div class="about_banner_img"><img src="{{ resourcetop.image }}" class="img-responsive" alt=""/>
+	   		</div>
+		 <div class="about_banner_wrap">
+      	    <h1 class="m_11">{{ resourcetop.subject }}</h1>
+		 </div>
+    {% endfor %}
+		 <div class="border">
+		 </div>
+		  <div class="container">
+		   <div class="classes_wrapper">
+             {% for resourcedetail in resourcedetail_list %}
+             {% if resourcedetail.flag == 0 %}
+                <div class="col-md-4">
+				  <div class="box2">
+				  	<div class="box1_left">
+ 					  <img src="{{ resourcedetail.image }}" class="img-responsive" alt=""/>
+					  <div class="desc2"> <!-- start desc2 -->
+						<h3>{{ resourcedetail.nickname }}<br><span class="m_text">{{ resourcedetail.basecity }}</span></h3>
+						<p>{{ resourcedetail.brief }}</p>
+						<div class="coursel_list">
+							<ul class="social-media">
+                                {% if resourcedetail.interest == 0 %}
+								    <a href="/love/?data_id={{ resourcedetail.dataid}}"><i class="heart2" data-toggle="tooltip" data-placement="left" title="关注" ></i></a>
+                                {% else %}
+                                    <a><i class="heart1" data-toggle="tooltip" data-placement="left" title="已关注" ></i></a>
+                                {% endif %}
+                                {% if resourcedetail.thumbup == 0 %}
+                                    <a href="/thumbup/?data_id={{ resourcedetail.dataid}}"><i class="like" data-toggle="tooltip" data-placement="right" title="点赞"></i></a>
+							    {% else %}
+                                   <a><i class="like1" data-toggle="tooltip" data-placement="right" title="已点赞"></i></a>
+                                {% endif %}
+                            </ul>
+						</div> <!-- coursel_list-->
+						<div class="clear"></div>
+					 </div> <!-- end desc2 -->
+					</div> <!-- end box1-left -->
+					<div class="box1_right">
+ 					  <h4 class="right_text">资质</h4>
+ 					  <p class="right_text1">{{ resourcedetail.feature }}</p>
+ 					  <h4 class="right_text">风格</h4>
+ 					  <p class="right_text2">{{ resourcedetail.value }}</p>
+                        {% if resourcedetail.interest == 1 %}
+					     <ul class="buttons_class">
+                             <li class="btn7"><a href="/jobs/?resource_dummy={{ resourcedetail.dummyid}}">服务</a></li>
+				         	<li class="btn8"><a href="/agenda/?resource_dummy={{ resourcedetail.dummyid}}">日程</a></li>
+			            	<div class="clear"></div>
+			         	</ul>
+                        {% endif %}
+					</div><!-- end box1-right -->
+				   <div class="clear"></div>
+				  </div><!-- end box2 -->
+			</div><!-- end bcol-md-4 -->
+             {% else %}
+              <div class="col-md-4">
+				  <div class="box1">
+				  	<div class="box1_left">
+ 					  <img src="{{ resourcedetail.image }}" class="img-responsive" alt=""/>
+					  <div class="desc1">
+						<h3>{{ resourcedetail.nickname }}<br><span class="m_text">{{ resourcedetail.basecity }}</span></h3>
+						<p>{{ resourcedetail.brief }}</p>
+						<div class="coursel_list">
+							<ul class="social-media">
+                                {% if resourcedetail.interest == 0 %}
+								    <a href="/love/?data_id={{ resourcedetail.dataid}}"><i class="heart2" data-toggle="tooltip" data-placement="left" title="关注" ></i></a>
+                                {% else %}
+                                    <a><i class="heart1" data-toggle="tooltip" data-placement="left" title="已关注" ></i></a>
+                                {% endif %}
+                                {% if resourcedetail.thumbup == 0 %}
+                                    <a href="/thumbup/?data_id={{ resourcedetail.dataid}}"><i class="like" data-toggle="tooltip" data-placement="right" title="点赞"></i></a>
+							    {% else %}
+                                   <a><i class="like1" data-toggle="tooltip" data-placement="right" title="已点赞"></i></a>
+                                {% endif %}
+                            </ul>
+						</div><!-- end coursel_list -->
+						<div class="clear"></div>
+					 </div><!-- end desc1 -->
+					</div><!-- end box1-left -->
+					<div class="box1_right">
+ 					 <h4>资质</h4>
+ 					 <p>{{ resourcedetail.feature }}</p>
+ 					  <h4>风格</h4>
+ 					 <p class="para1">{{ resourcedetail.value }}</p>
+                        {% if resourcedetail.interest == 1 %}
+						<ul class="buttons_class">
+                            <li class="btn5"><a href="/jobs/?resource_dummy={{ resourcedetail.dummyid}}">服务</a></li>
+                            <li class="btn6"><a href="/agenda/?resource_dummy={{ resourcedetail.dummyid}}">日程</a></li>
+			            	<div class="clear"></div>
+			         	</ul>
+                        {% endif %}
+					</div><!-- end box1-right-->
+					  <div class="clear"></div>
+				  </div><!-- end box1-->
+			</div><!-- end col-md-4-->
+             {% endif %}
+            {% endfor %}
+   			</div><!-- end class-wraper -->
+
+		  </div><!-- container-->
+        <div class="testimonial"> <!-- 中间间隔的样式 -->
+		</div>
+	</div> <!-- end main -->
+    {% include "nav-footer.html" %}
+</body>
+</html>

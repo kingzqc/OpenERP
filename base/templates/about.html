@@ -1,0 +1,69 @@
+
+<!DOCTYPE HTML>
+<html>
+<head>
+<title> Thinkin PSM Website  | About</title>
+<link href="/static/base/static/css/bootstrap.css" rel='stylesheet' type='text/css' />
+<link href="/static/base/static/css/style.css" rel='stylesheet' type='text/css' />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+<script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
+<script src="/static/base/static/jsweb/jquery.min.js"></script>
+<!-- grid-slider -->
+<script type="text/javascript" src="/static/base/static/jsweb/jquery.mousewheel.js"></script>
+<script type="text/javascript" src="/static/base/static/jsweb/jquery.contentcarousel.js"></script>
+<!-- //grid-slider -->
+<!---calender-style---->
+<link rel="stylesheet" href="/static/base/static/css/jquery-ui.css" />
+<!---//calender-style---->				  
+</head>
+<body>
+	<!--start menu-->
+	{% include "nav-top.html" %}
+    <!--start menu-->
+	<div class="main">
+        {% for abouttop in abouttop_list %}
+	   <div class="about_banner_img"><img src="{{ abouttop.image }}" class="img-responsive" alt=""/></div>
+		 <div class="about_banner_wrap">
+      	    <h1 class="m_11">{{ abouttop.subject }}</h1>
+      	 </div>
+        {% endfor %}
+      	 <div class="about-wrapper">
+
+      	    <div class="container">
+                {% for aboutdetail in aboutdetail_list %}
+		       <div class="row about-top">
+				 <div class="col-md-5">
+				  <img src="{{ aboutdetail.image }}" class="img-responsive" alt=""/>
+			     </div>
+				 <div class="col-md-7 about-left-text">
+				   <h2>{{ aboutdetail.brief }}</h2>
+				   <p>{{ aboutdetail.detail }}</p>
+				 </div>
+                 <div class="clear"></div>	
+               </div>
+                {% endfor %}
+		    </div>
+	      </div>
+		<div class="border">
+	   </div>
+	    <div class="login">
+	  	    <div class="row login_details">
+		 	  <div class="col-md-6">
+				  <div class="join">
+				  	 <h3>加入我们 ?</h3>
+				  	 <div class="btn3">
+				       <a href="/register/">现在加入</a>
+			         </div>	
+				  </div>
+			  </div>
+				<div class="clear"></div>
+		   </div>
+	  </div>
+	  <div class="border">
+	   </div>
+        {% include "nav-footer.html" %}
+    </div> <!-- end main -->
+</body>
+</html>

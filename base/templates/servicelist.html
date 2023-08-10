@@ -1,0 +1,106 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<title>Thinkin PSM Website | MyService</title>
+<link href="/static/base/static/css/bootstrap.css" rel='stylesheet' type='text/css' />
+<link href="/static/base/static/css/style.css" rel='stylesheet' type='text/css' />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+<script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
+<script src="/static/base/static/jsweb/jquery.min.js"></script>
+</head>
+<body>
+ <!--start menu-->
+	{% include "nav-top.html" %}
+    <!--end  menu-->
+ <div class="main">
+  <div class="about_banner_img"><img src="/medias/static/base/static/website/image/Picture_148492.jpg" class="img-responsive" alt=""/>
+	   		</div>
+		 <div class="about_banner_wrap">
+      	    <h1 class="m_11">我的服务</h1>
+		 </div>
+  <div class="border">
+		 </div>
+          	<div class="container">
+            <!----   --->
+            <div class="sap_tabs">
+			<div id="horizontalTab" style="display: block; width: 100%; margin: 0px;">
+		      <form class="resp-tabs-container" style="background-color: #CCFFFF" action="" method="get">
+			  <ul class="resp-tabs-list" style="display: flex; height: 20px;">
+                  {% if form_data.catalog == "all" %}
+                     <input  type="text"  name="resource_dummy" value="{{ form_data.resourcedummy }}" style="display: none">
+                    <button type="button" class="btn btn-info btn-xs add_new" onclick="javascript:window.location.href='{% url 'servicedetailedit' %}?service_dummy=0';" data="">新增</button>
+                    <input  class="resp-tab-item" onclick="javascript:form.submit();"  type="radio"  name="catalog" value="all" checked="checked"><span  style="background-color: #CCFFFF">全部</span>
+                    <input  class="resp-tab-item" onclick="javascript:form.submit();"  type="radio"  name="catalog" value="workshop"><span>工作坊</span>
+                    <input  class="resp-tab-item" onclick="javascript:form.submit();"  type="radio"  name="catalog" value="consulting"><span>咨询</span>
+                    {% endif %}
+                  {% if form_data.catalog == "workshop" %}
+                      <input  type="text"  name="resource_dummy" value="{{ form_data.resourcedummy }}" style="display: none" >
+                      <button type="button" class="btn btn-info btn-xs add_new" onclick="javascript:window.location.href='{% url 'servicedetailedit' %}?service_dummy=0';" data="">新增</button>
+                    <input class="resp-tab-item" onclick="javascript:form.submit();"  type="radio"  name="catalog" value="all" ><span>全部</span>
+                    <input   class="resp-tab-item" onclick="javascript:form.submit();"  type="radio"  name="catalog" value="workshop" checked="checked"><span  style="background-color: #CCFFFF">工作坊</span>
+                    <input  class="resp-tab-item" onclick="javascript:form.submit();"  type="radio"  name="catalog" value="consulting"><span>咨询</span>
+                  {% endif %}
+                {% if form_data.catalog == "consulting" %}
+                    <input  type="text"  name="resource_dummy" value="{{ form_data.resourcedummy }}" style="display: none">
+                    <button type="button" class="btn btn-info btn-xs add_new" onclick="javascript:window.location.href='{% url 'servicedetailedit' %}?service_dummy=0';" data="">新增</button>
+                    <input class="resp-tab-item" onclick="javascript:form.submit();"  type="radio"  name="catalog" value="all" ><span>全部</span>
+                    <input   class="resp-tab-item" onclick="javascript:form.submit();"  type="radio"  name="catalog" value="workshop"><span>工作坊</span>
+                    <input  class="resp-tab-item" onclick="javascript:form.submit();"  type="radio"  name="catalog" value="consulting"  checked="checked"><span  style="background-color: #CCFFFF">咨询</span>
+                  {% endif %}
+				  <div class="clear"></div>
+			  </ul>
+            </form>
+				<div class="resp-tabs-container table-responsive">
+				      <div class="tab-1 resp-tab-content" aria-labelledby="tab_item-0">
+						<div class="facts">
+							<ul class="tab-left">
+						<table class="table table-hover table-striped">
+                         <thead bgcolor='#CCFFFF'>
+                        <th>ID</th>
+                        <th>简称</th>
+                        <th>摘要</th>
+                        <th>基础价格</th>
+                        <th>分类</th>
+                        <th></th>
+                        </thead>
+                        <tbody>
+                        {% for item in servicelist %}
+                            <tr>
+                                <td>{{ item.Data_id }}</td>
+                                <td>{{ item.Job_code }}</td>
+                                <td>{{ item.Job_brief }}</td>
+                                <td>{{ item.Job_price }}</td>
+                                <td>{{ item.Job_contenttype }}</td>
+                                <td>
+                                    <button type="button" class="btn btn-info btn-sm view_service" onclick="javascript:window.location.href='{% url 'servicedetailedit' %}?service_dummy={{ item.Dummy_id }}';" data="{{ item.Data_id}}">查看</button>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                   </ul>
+                        <ul class="pagination">
+                    {% include 'page_number.html' %}
+                    </ul>
+			 </div>
+			</div>
+          </div>     <!---- resp-tabs-container  --->
+            </div>    <!---- horizontalTab  --->
+            </div>   <!---- sap_tabs  --->
+           </div>-    <!---- container--->
+ </div><!---- main --->
+</body>
+</html>
+<!---- --->
+<script src="/static/base/static/jsweb/easyResponsiveTabs.js" type="text/javascript"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#horizontalTab').easyResponsiveTabs({
+            type: 'default', //Types: default, vertical, accordion
+            width: 'auto', //auto or any width like 600px
+            fit: true   // 100% fit in a container
+        });
+    });
+</script>

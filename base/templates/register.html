@@ -1,0 +1,119 @@
+
+<!DOCTYPE HTML>
+<html>
+<head>
+<title>Thinkin PSM Website  | 注册</title>
+<link href="/static/base/static/css/bootstrap.css" rel='stylesheet' type='text/css' />
+<link href="/static/base/static/css/style.css" rel='stylesheet' type='text/css' />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+<script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
+<script src="/static/base/static/jsweb/jquery.min.js"></script>
+</head>
+<body>
+    <!--start menu-->
+	{% include "nav-top.html" %}
+    <!--end menu-->
+        <div class="main">
+          <div class="register-grids">
+          	<div class="container">
+						<form action="/register/" method="post" name="register" id="register-form">
+                            {% csrf_token %}
+								<div class="register-top-grid">
+										<h3>个人信息</h3>
+										<div>
+											<span>名字<label>*</label></span>
+                                                {{ register_form.name }}
+                                            <span style="color: coral">{{ register_form.msg.name.0}}</span>
+										</div>
+										<div>
+											<span>姓氏<label>*</label></span>
+                                                {{ register_form.surname }}
+                                             <span style="color: coral">{{ msg.surname.0}}</span>
+                                        </div>
+										<div>
+											<span>邮件地址<label>*</label></span>
+                                                {{ register_form.email }}
+                                                <span style="color: coral">{{ msg.email.0}}</span>
+                                        </div>
+                                        <div>
+											<span>手机号码<label>*</label></span>
+                                                {{ register_form.cellphone }}
+                                                <span style="color: coral">{{ msg.cellphone.0}}</span>
+                                        </div>
+										<div class="clear"> </div>
+										<div class="clear"> </div>
+								</div>
+								<div class="clear"> </div>
+								<div class="register-bottom-grid">
+										<h3>登录信息</h3>
+                                        <div>
+											<span>用户类型<label>*</label></span>
+                                                {{ register_form.usertype }}
+                                             <span style="color: coral">{{ msg.usertype.0}}</span>
+                                        </div>
+                                        <div>
+											<span>资源类型<label>*</label></span>
+                                                {{ register_form.resourcetype }}
+                                             <span style="color: coral">{{ msg.resourcetype.0}}</span>
+                                        </div>
+                                        <div>
+											<span>所属机构<label>*</label></span>
+                                                {{ register_form.databu }}
+                                             <span style="color: coral">{{ msg.databu.0}}</span>
+                                        </div>
+                                        <div>
+											<span>用户名<label>*</label></span>
+                                                {{ register_form.username }}
+                                             <span style="color: coral">{{ msg.username.0}}</span>
+                                        </div>
+										<div>
+											<span>密码<label>*</label></span>
+                                                {{ register_form.password }}
+                                             <span style="color: coral">{{ msg.password.0}}</span>
+                                        </div>
+										<div>
+											<span>确认密码<label>*</label></span>
+                                                {{ register_form.password2 }}
+                                             <span style="color: coral">{{ msg.password2.0}}</span>
+                                        </div>
+										<div class="clear"> </div>
+								</div>
+								<div class="clear"> </div>
+                                        <!-- PSM add -->
+                                <div id="id_captcha_100">
+                                <label for="modlgn_captcha">验证码</label>
+                                {{ register_form.captcha }}
+                                {% for error in register_form.captcha.errors %}
+                                <p id="error_{{forloop.counter}}_{{field.auto_id}}" style="color:red" class="text-danger help-block">{{error}}</p>
+                                {% endfor %}
+                                </div> <!-- end captcha 100 -->
+                             <!-- PSM end -->
+                                <div style="color: red" id="Loginmsg">{{ msg }}</div>
+								<input type="submit" name="Submit" class="button bg-primary" value="提交">
+
+                                <div class="clear"></div>
+						</form>
+					</div>
+				</div>
+         </div>
+        {% include "nav-footer.html" %}
+<script type="text/javascript">
+<!-- PSM add -->
+document.getElementById('id_captcha_0').focus()
+$(function () {
+    $("#id_captcha_1").addClass("form-control input-lg").css({"width": "200px", "display": "inline-block", "margin-left":"15px", "height": "40px"}).attr("placeholder", "请输入验证码");
+    // 图片验证码点击刷新事件,以下是新增行
+    $("#id_captcha_100 img").click(function () {
+      $.get("/captcha/refresh/", function (data) {
+        if (data.key != "") {
+          $("#id_captcha_100 img").attr("src", data.image_url);
+          $("#id_captcha_0").attr("value", data.key);
+        }
+      })
+    })
+})
+</script>
+</body>
+</html>

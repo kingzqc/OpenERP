@@ -1,0 +1,85 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<title>Thinkin PSM Website | Services</title>
+<link href="/static/base/static/css/bootstrap.css" rel='stylesheet' type='text/css' />
+<link href="/static/base/static/css/style.css" rel='stylesheet' type='text/css' />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+<script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
+<script src="/static/base/static/jsweb/jquery.min.js"></script>
+<!-- grid-slider -->
+<script type="text/javascript" src="/static/base/static/jsweb/jquery.mousewheel.js"></script>
+<script type="text/javascript" src="/static/base/static/jsweb/jquery.contentcarousel.js"></script>
+<!-- //grid-slider -->
+<!---calender-style---->
+<link rel="stylesheet" href="/static/base/static/css/jquery-ui.css" />
+<!---//calender-style---->
+</head>
+<body>
+<!--start menu-->
+	{% include "nav-top.html" %}
+    <!--start menu-->
+	<div class="main">
+        {% for jobstop in jobstop_list %}
+       		<div class="view view-fifth">
+                <img src="{{ jobstop.image }}" class="img-responsive" alt=""/>
+	   		</div>
+		 <div class="about_banner_wrap">
+      	    <h1 class="m_11">{{ jobstop.subject }}</h1>
+		 </div>
+        {% endfor %}
+		 <div class="border">
+		 </div>
+		<div class="container"> <!-- for 循环开始 -->
+                {% for jobsdetail in jobsdetail_list %}
+                <div class="view view-fifth">
+				 <div class="col-md-5">
+                     <img src="{{ jobsdetail.image }}" class="img-responsive" alt=""/>
+                    <div class="mask">
+                        <div class="info"><a href="/jobs/?service_dummy={{ jobsdetail.dummyid }}">详情></a></div>
+			        </div>
+			     </div> <!-- end md 5 -->
+				 <div class="col-md-7 content_left_text">
+				   <h1>{{ jobsdetail.jobbrief}}</h1>
+				   <p>参考价（元）：{{ jobsdetail.jobprice}}</p>
+				 </div><!-- end md 7 -->
+                </div>  <!-- end view fifth -->
+
+             <div class="view view-fifth">
+               <div class="col-md-12">
+				  <div class="singe_desc">
+				    <ul class="single_grid">
+				    	<li class="grid1">
+				    	  <h3 class="m_13">类 别</h3>
+                           <p>名称：{{jobsdetail.jobname}}</p>
+                            <h5>作者：{{jobsdetail.jobowner }}</h5>
+                           <h5>形式：{{jobsdetail.jobtype }}</h5>
+
+				    	</li>
+				    	<li class="grid2">
+				    	   <h3 class="m_13">特 点</h3>
+				    	   <ul class="list1_class">
+				    	   	 <li><a href="#">{{ jobsdetail.jobfeature }}</a></li>
+				    	   </ul>
+				    	</li>
+						<li class="grid3">
+				    	   <h3 class="m_13">目 标</h3>
+				    	   <ul class="list2_class">
+                               <li><a href="#">{{ jobsdetail.jobtarget }}</a></li>
+						   </ul>
+				    	</li>
+				    	<div class="clear"></div>
+				    </ul>
+				  </div> <!-- end sigle desc -->
+			     </div><!-- end md 12 -->
+			     </div><!-- end fifth -->
+            {% endfor %}
+		  </div><!-- end container -->
+		<div class="testimonial"> <!-- 中间间隔的样式 -->
+		</div>
+	</div> <!-- end main -->
+    {% include "nav-footer.html" %}
+</body>
+</html>

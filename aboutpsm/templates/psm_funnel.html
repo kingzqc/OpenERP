@@ -1,0 +1,416 @@
+
+{# 继承xadmin的侧边栏和导航栏 #}
+{% extends 'xadmin/base_site.html' %}
+{# 去掉标签栏 #}
+{% block content-nav %}
+
+{% endblock %}
+
+{# add chart #}
+{% block content %}
+<body>
+<!-- 引入 bootstrap.js -->
+<script type="text/javascript" src="/static/xadmin/vendor/bootstrap/js/bootstrap.js"></script>
+<!-- 引入 echarts.js -->
+<script type="text/javascript" src="/static/xadmin/js/echarts.min.js"></script>
+<script type="text/javascript" charset="utf8" src="/static/xadmin/js/jquery-1.4.4.min.js"></script>
+<!-- below style 定义日历的显示样式-->
+<style type="text/css">
+		*{
+			margin: 0;padding: 0
+		}
+		#wrap{
+			width: 98%;
+			margin:0 auto;
+		}
+		#header{
+			/* margin:20px;   */
+			height:80px;
+			border:solid 2px #6bc0ac;
+		}
+		#container{
+			position:relative;
+			margin-top:20px;
+			height:700px;
+		}
+		#group_funnel{
+			position:absolute;
+			top:260px;
+			left:0px;
+			border:solid 2px #6bc0ac;
+			width:70px;
+			height:5%;
+		}
+		#myfunnel{
+			margin:0px 80px 0px 80px;
+			border:solid 2px #6bc0ac;
+			height:100%;
+		}
+		#company_funnel{
+			position:absolute;
+			top:260px;
+			right:0px;
+			border:solid 2px #6bc0ac;
+			width:70px;
+			height:5%;
+		}
+</style>
+    <div id="wrap">
+		<div id="container">
+            <button id="group_funnel" style="text-align:center" class="btn btn-info btn-xs" role="button" rel="external nofollow">团队</button>
+			<div style="background-color: #FFFFFF;" id="myfunnel"></div>
+            <button id="company_funnel" style="text-align:center" class="btn btn-info btn-xs" role="button" rel="external nofollow">公司</button>
+		</div>
+	</div>
+<script type="text/javascript">
+var chartDom = document.getElementById('myfunnel');
+var funnelChart = echarts.init(chartDom);
+var option;
+
+const colors = ['#99FFCC', '#00FFFF',  '#0033FF', '#FF0000','#CC3300','#66CCFF'];
+//
+function getVirtulData(StartDate, EndDate, Range) {
+  start_date = StartDate || '2022-01-01';
+  end_date = EndDate || '2022-12-31';
+  data_range = Range || 'MYSELF'
+  let resultlegendlist  = [];
+  let resultfedatalist = [];
+  let resultfadatalist = [];
+  let legendlist = [];
+  let fedatalist = [];
+  let fadatalist = [];
+  // call to get variables from views
+    $.ajax({
+        type: "GET",
+        url: "{% url 'load_opportunitys' %}",
+        data: {
+            "startdate": start_date,
+            "enddate": end_date,
+            "datarange": data_range,
+        },
+        dataType: 'json',
+        async: false,
+        success: function (result) {
+            resultlegendlist = result.legendlist;
+            resultfedatalist = result.fedatalist;
+            resultfadatalist = result.fadatalist;
+            if (result.code == '0') {
+                legendlist = resultlegendlist;
+                fedatalist = resultfedatalist;
+                fadatalist = resultfadatalist;
+            } else {
+                legendlist = [];
+                fedatalist = [];
+                fadatalist = [];
+            }
+        }
+    });
+    return {legendlist, fedatalist, fadatalist}
+}
+//  转换数据格式，适应echart =====
+var nowyear = new Date().getFullYear();
+var nowmonth = new Date().getMonth();
+var nowdate = new Date().getDate();
+var todayEndDate = datetoyymmdd(new Date(nowyear,nowmonth,nowdate));
+var threeMonthStartDate = datetoyymmdd(new Date(nowyear,nowmonth-3,0));
+//
+var legend_list = []
+var fedata_list = []
+var fadata_list = []
+var range ='MYSELF'
+vd = getVirtulData(threeMonthStartDate, todayEndDate, range);
+legend_list = vd.legendlist
+fedata_list = vd.fedatalist
+fadata_list = vd.fadatalist
+// ===== echart option setting start ======
+option = {
+  title: {
+    text: '我的商机漏斗'
+  },
+  tooltip: {
+    trigger: 'item',
+    formatter: '{a} <br/>{b} : {c}%'
+  },
+  toolbox: {
+    feature: {
+      dataView: { readOnly: false },
+      restore: {},
+      saveAsImage: {}
+    }
+  },
+  legend: {
+    //data: ['Show', 'Click', 'Visit', 'Inquiry', 'Order']
+      data: legend_list,
+  },
+  series: [
+    {
+      name: '预期',
+      type: 'funnel',
+      left: '15%',
+      width: '70%',
+      label: {
+        formatter: '{b}预期'
+      },
+      labelLine: {
+        show: false
+      },
+      itemStyle: {
+        opacity: 0.7
+      },
+      emphasis: {
+        label: {
+          position: 'inside',
+          formatter: '{b}预期: {c}%'
+        }
+      },
+        data: fedata_list,
+    },
+    {
+      name: '实际',
+      type: 'funnel',
+      left: '15%',
+      width: '70%',
+      maxSize: '70%',
+      label: {
+        position: 'inside',
+        formatter: '{c}%',
+        color: '#fff'
+      },
+      itemStyle: {
+        opacity: 0.5,
+        borderColor: '#fff',
+        borderWidth: 2
+      },
+      emphasis: {
+        label: {
+          position: 'inside',
+          formatter: '{b}实际: {c}%'
+        }
+      },
+        data: fadata_list,
+      // Ensure outer shape will not be over inner shape when hover.
+      z: 100
+    }
+  ]
+};
+// ===== echart option setting end ======
+window.onresize = funnelChart.resize;
+option && funnelChart.setOption(option);
+//  日期转换为年月日
+function datetoyymmdd(date) {
+    var strYear = date.getFullYear();
+    var strDay = date.getDate();
+    var strMonth = date.getMonth() + 1;
+    if (strMonth < 10) {
+        strMonth = "0" + strMonth;
+    }
+    if (strDay < 10) {
+        strDay = "0" + strDay;
+    }
+    var datestr = strYear + "-" + strMonth + "-" + strDay;
+    return datestr;
+}
+// 上月 下月 按钮的操作    start =========
+$("#group_funnel").click(function () {
+    funnelChart = echarts.init(document.getElementById('myfunnel'))
+    var nowyear = new Date().getFullYear();
+    var nowmonth = new Date().getMonth();
+    var nowdate = new Date().getDate();
+    var todayEndDate = datetoyymmdd(new Date(nowyear,nowmonth,nowdate));
+    var threeMonthStartDate = datetoyymmdd(new Date(nowyear,nowmonth-3,0));
+    //
+    var legend_list = [];
+    var fedata_list = [];
+    var fadata_list = [];
+    let range ='GROUP';
+    vd = getVirtulData(threeMonthStartDate, todayEndDate, range);
+    legend_list = vd.legendlist
+    fedata_list = vd.fedatalist
+    fadata_list = vd.fadatalist
+        // ===== echart option setting start ======
+option = {
+  title: {
+    text: '团队商机漏斗'
+  },
+  tooltip: {
+    trigger: 'item',
+    formatter: '{a} <br/>{b} : {c}%'
+  },
+  toolbox: {
+    feature: {
+      dataView: { readOnly: false },
+      restore: {},
+      saveAsImage: {}
+    }
+  },
+  legend: {
+   // data: ['Show', 'Click', 'Visit', 'Inquiry', 'Order']
+      data: legend_list,
+  },
+  series: [
+    {
+      name: '预期',
+      type: 'funnel',
+      left: '10%',
+      width: '80%',
+      label: {
+        formatter: '{b}预期'
+      },
+      labelLine: {
+        show: false
+      },
+      itemStyle: {
+        opacity: 0.7
+      },
+      emphasis: {
+        label: {
+          position: 'inside',
+          formatter: '{b}预期: {c}%'
+        }
+      },
+        data: fedata_list,
+    },
+    {
+      name: '实际',
+      type: 'funnel',
+      left: '10%',
+      width: '80%',
+      maxSize: '80%',
+      label: {
+        position: 'inside',
+        formatter: '{c}%',
+        color: '#fff'
+      },
+      itemStyle: {
+        opacity: 0.5,
+        borderColor: '#fff',
+        borderWidth: 2
+      },
+      emphasis: {
+        label: {
+          position: 'inside',
+          formatter: '{b}实际: {c}%'
+        }
+      },
+        data: fadata_list,
+      // Ensure outer shape will not be over inner shape when hover.
+      z: 100
+    }
+  ]
+};
+// ===== echart option setting end ======
+        window.onresize = funnelChart.resize;
+        funnelChart.clear();
+        funnelChart.setOption(option, true);//重新设置图表
+    });
+$("#company_funnel").click(function () {
+        funnelChart = echarts.init(document.getElementById('myfunnel'))
+        var nowyear = new Date().getFullYear();
+        var nowmonth = new Date().getMonth();
+        var nowdate = new Date().getDate();
+        var todayEndDate = datetoyymmdd(new Date(nowyear,nowmonth,nowdate));
+        var threeMonthStartDate = datetoyymmdd(new Date(nowyear,nowmonth-3,0));
+        //
+        var legend_list = [];
+        var fedata_list = [];
+        var fadata_list = [];
+        let range ='COMPANY';
+        vd = getVirtulData(threeMonthStartDate, todayEndDate, range);
+        legend_list = vd.legendlist
+        fedata_list = vd.fedatalist
+        fadata_list = vd.fadatalist
+        // ===== echart option setting start ======
+option = {
+  title: {
+    text: '公司商机漏斗'
+  },
+  tooltip: {
+    trigger: 'item',
+    formatter: '{a} <br/>{b} : {c}%'
+  },
+  toolbox: {
+    feature: {
+      dataView: { readOnly: false },
+      restore: {},
+      saveAsImage: {}
+    }
+  },
+  legend: {
+   // data: ['Show', 'Click', 'Visit', 'Inquiry', 'Order']
+    data: legend_list,
+  },
+  series: [
+    {
+      name: '预期',
+      type: 'funnel',
+      left: '10%',
+      width: '80%',
+      label: {
+        formatter: '{b}预期'
+      },
+      labelLine: {
+        show: false
+      },
+      itemStyle: {
+        opacity: 0.7
+      },
+      emphasis: {
+        label: {
+          position: 'inside',
+          formatter: '{b}预期: {c}%'
+        }
+      },
+      //data: [
+      //  { value: 60, name: 'Visit' },
+      //  { value: 40, name: 'Inquiry' },
+      //  { value: 20, name: 'Order' },
+      //  { value: 80, name: 'Click' },
+      //  { value: 100, name: 'Show' }
+      //]
+        data: fedata_list,
+    },
+    {
+      name: '实际',
+      type: 'funnel',
+      left: '10%',
+      width: '80%',
+      maxSize: '80%',
+      label: {
+        position: 'inside',
+        formatter: '{c}%',
+        color: '#fff'
+      },
+      itemStyle: {
+        opacity: 0.5,
+        borderColor: '#fff',
+        borderWidth: 2
+      },
+      emphasis: {
+        label: {
+          position: 'inside',
+          formatter: '{b}实际: {c}%'
+        }
+      },
+      //data: [
+      //  { value: 30, name: 'Visit' },
+      //  { value: 10, name: 'Inquiry' },
+      //  { value: 5, name: 'Order' },
+      //  { value: 50, name: 'Click' },
+      //  { value: 80, name: 'Show' }
+     // ],
+        data: fadata_list,
+      // Ensure outer shape will not be over inner shape when hover.
+      z: 100
+    }
+  ]
+};
+// ===== echart option setting end ======
+        window.onresize = funnelChart.resize;
+        funnelChart.clear();
+        funnelChart.setOption(option, true);//重新设置图表
+    });
+// ===============上月 下月 按钮的操作  end ==========
+</script>
+{# end calendar#}
+</body>
+{% endblock content %}

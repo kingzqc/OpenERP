@@ -1,0 +1,82 @@
+{% extends base_template %}
+{% load i18n l10n %}
+
+{% load xadmin_tags %}
+
+{% block breadcrumbs %}
+<ul class="breadcrumb">
+<li><a href="{% url 'xadmin:index' %}">{% trans 'Home' %}</a></li>
+<li><a href="{% url opts|admin_urlname:'changelist' %}">{{ opts.verbose_name_plural|capfirst }}</a></li>
+<li>{% trans 'Change multiple objects' %}</li>
+</ul>
+{% endblock %}
+{% block nav_title %}{{title}}{% endblock %}
+
+{% block content %}
+{% if perms_lacking or protected %}
+    {% if perms_lacking %}
+        <div class="alert alert-danger">{% blocktrans %}Changing the selected {{ objects_name }} would result in changing related objects, but your account doesn't have permission to change the following types of objects:{% endblocktrans %}</div>
+        <ul class="model_ul">
+        {% for obj in perms_lacking %}
+            <li>{{ obj }}</li>
+        {% endfor %}
+        </ul>
+    {% endif %}
+    {% if protected %}
+        <div class="alert alert-danger">{% blocktrans %}Changing the selected {{ objects_name }} would require changing the following protected related objects:{% endblocktrans %}</div>
+        <ul class="model_ul">
+        {% for obj in protected %}
+            <li>{{ obj }}</li>
+        {% endfor %}
+        </ul>
+    {% endif %}
+{% else %}
+    <div class="alert alert-warning">{% blocktrans %}Are you sure you want to delete the selected {{ objects_name }}? All of the following objects and their related items will be deleted:{% endblocktrans %}</div>
+    {% for deletable_object in deletable_objects %}
+    <ul class="model_ul">
+        {{ deletable_object|unordered_list }}
+    </ul>
+    {% endfor %}
+    <form action="" method="post">{% csrf_token %}
+    <div>
+    {% for obj in queryset %}
+    <input type="hidden" name="{{ action_checkbox_name }}" value="{{ obj.pk|unlocalize }}" />
+    {% endfor %}
+    <input type="hidden" name="action" value="change_selected" />
+    <input type="hidden" name="post" value="yes" />
+
+    <div class="alert alert-warning">{% if title %}{{"操作内容:"}}{% else %}{% trans "Operation Contents:" %}{% endif %}</div>
+    {% include 'bootstrap3/errors.html' %}
+
+      <div id="div_id_username" class="row{% if form.username.errors %} has-error{% endif %}">
+        <div class="controls clearfix">
+        <div class="input-group input-group-lg">
+          <span class="input-group-addon"><i class="fa fa-user fa-fw"></i></span>
+          <input class="form-control input-lg" id="id_username" maxlength="254" name="username" type="text" placeholder="{% trans "Username" %}">
+        </div>
+        {% for error in form.username.errors %}
+            <p id="error_{{ forloop.counter }}_{{ field.auto_id }}" class="text-danger help-block">{{ error }}</p>
+        {% endfor %}
+        </div>
+      </div>
+
+      <div id="div_id_password" class="row{% if form.password.errors %} has-error{% endif %}">
+        <div class="controls clearfix">
+        <div class="input-group input-group-lg">
+          <span class="input-group-addon"><i class="fa fa-lock fa-fw"></i></span>
+          <input class="form-control input-lg" id="id_password" name="password" type="password" placeholder="{% trans "Password" %}">
+        </div>
+        {% for error in form.password.errors %}
+            <p id="error_{{ forloop.counter }}_{{ field.auto_id }}" class="text-danger help-block">{{ error }}</p>
+        {% endfor %}
+        </div>
+
+    {% view_block 'form_fields' %}
+    <div class="form-actions well well-sm">
+        <input class="btn btn-danger btn-lg" type="submit" value="{% trans "Yes, I'm sure" %}" />
+        <a class="btn btn-default pull-right" onclick="javascript:history.back();" >{% trans 'Cancel' %}</a>
+    </div>
+    </div>
+    </form>
+{% endif %}
+{% endblock %}

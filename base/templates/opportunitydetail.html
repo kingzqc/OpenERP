@@ -1,0 +1,151 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<title>Thinkin PSM Website  | Opportunity Detail</title>
+<link href="/static/base/static/css/bootstrap.css" rel='stylesheet' type='text/css' />
+<link href="/static/base/static/css/style.css" rel='stylesheet' type='text/css' />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+<script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
+<script src="/static/base/static/jsweb/jquery.min.js"></script>
+<!-- grid-slider -->
+<script type="text/javascript" src="/static/base/static/jsweb/jquery.mousewheel.js"></script>
+<script type="text/javascript" src="/static/base/static/jsweb/jquery.contentcarousel.js"></script>
+<!-- //grid-slider -->
+<!---calender-style---->
+<link rel="stylesheet" href="/static/base/static/css/jquery-ui.css" />
+<!---//calender-style---->
+</head>
+<body>
+<!--start menu-->
+	{% include "nav-top.html" %}
+    <!--start menu-->
+ <div class="main">
+         {% for opportunitytop in opportunitytop_list %}
+       		<div class="about_banner_img"><img src="{{ opportunitytop.image }}" class="img-responsive" alt=""/>
+	   		</div>
+		    <div class="about_banner_wrap">
+      	        <h1 class="m_11">{{ opportunitytop.subject }}</h1>
+		    </div>
+         {% endfor %}
+          <div class="login_top">
+          	<div class="container">
+             <form action="/opportunitydetailedit/?data_id={{ opportunity_id }}" method="post" name="opportunitydetail_form" id="opportunitydetail_form" enctype="multipart/form-data">
+             {% csrf_token %}
+			  <div class="col-md-6">
+				 <div class="login-page">
+					<h4 class="title">基本信息{{ opportunitydetail_form.mode }}{{ opportunitydetail_form.nowuser }}</h4>
+                     <div id="loginbox" class="loginbox">
+                         <fieldset class="input">
+                         <p id="login-form-opportunitycode">
+                                  <label for="opportunitycode">代码</label>
+                                     {{ opportunitydetail_form.Opportunity_code }}
+                                     <span style="color: coral">{{ opportunitydetail_form.msg.Opportunity_code.0}}</span>
+                         </p>
+                         <p id="login-form-opportunityname">
+                                  <label for="opportunityname">名称</label>
+                                     {{ opportunitydetail_form.Opportunity_name }}
+                                     <span style="color: coral">{{ opportunitydetail_form.msg.Opportunity_name.0}}</span>
+                         </p>
+                         <p id="login-form-opportunitysource">
+                                  <label for="opportunitysource">来源</label>
+                                     {{ opportunitydetail_form.Opportunity_source }}
+                                     <span style="color: coral">{{ opportunitydetail_form.msg.Opportunity_source.0}}</span>
+                         </p>
+                              <p id="login-form-flowcycle">
+                                  <label for="flowcycle">销售周期</label>
+                                     {{ opportunitydetail_form.Opportunity_flowcycle }}
+                                     <span style="color: coral">{{ opportunitydetail_form.msg.Opportunity_flowcycle.0}}</span>
+                         </p>
+                               <p id="login-form-opportunityinitamt">
+                                  <label for="opportunityinitamt">初始金额</label>
+                                     {{ opportunitydetail_form.Opportunity_initialamount }}
+                                     <span style="color: coral">{{ opportunitydetail_form.msg.Opportunity_initialamount.0}}</span>
+                         </p>
+                           <p id="login-form-opportunitynowamt">
+                          <label for="opportunitynowamt">当前金额</label>
+                             {{ opportunitydetail_form.Opportunity_currentamount }}
+                             <span style="color: coral">{{ opportunitydetail_form.msg.Opportunity_currentamount.0}}</span>
+                         </p>
+                         <p id="login-form-opportunityendamt">
+                      <label for="opportunityendamt">最终金额</label>
+                         {{ opportunitydetail_form.Opportunity_finalamount }}
+                         <span style="color: coral">{{ opportunitydetail_form.msg.Opportunity_finalamount.0}}</span>
+                         </p>
+                                     <p id="login-form-opportunitynowstage">
+                                  <label for="opportunitynowstage">当前流程</label>
+                                     {{ opportunitydetail_form.Opportunity_nowstage }}
+                                     <span style="color: coral">{{ opportunitydetail_form.msg.Opportunity_nowstage.0}}</span>
+                         </p>
+                                     <p id="login-form-opportunitynextstage">
+                                  <label for="opportunitynextstage">接续流程</label>
+                                     {{ opportunitydetail_form.Opportunity_nextstage }}
+                                     <span style="color: coral">{{ opportunitydetail_form.msg.Opportunity_nextstage.0}}</span>
+                         </p>
+                          <p id="login-form-opportunitycomments">
+                                  <label for="opportunitycomments">备注</label>
+                                     {{ opportunitydetail_form.Opportunity_comments }}
+                                     <span style="color: coral">{{ opportunitydetail_form.msg.Opportunity_comments.0}}</span>
+                         </p>
+
+	                    </fieldset>
+                     </div>
+					 <div class="clear"></div>
+				  </div>
+				</div> <!-- wnd md-6 -->
+				<div class="col-md-6">
+				 <div class="login-page">
+				  <div class="login-title">
+	           		<h4 class="title">附加信息</h4>
+					<div id="loginbox" class="loginbox">
+						  <fieldset class="input">
+						    <p id="login-form-opportunitystatus">
+						      <label for="opportunitystatus">状态</label>
+						         {{ opportunitydetail_form.Opportunity_status }}
+                                 <span style="color: coral">{{ opportunitydetail_form.msg.Opportunity_status.0}}</span>
+						    </p>
+                           <p id="login-form-opportunitycontact">
+                                  <label for="opportunitycontact">联系人</label>
+                                     {{ opportunitydetail_form.Opportunity_contact }}
+                                     <span style="color: coral">{{ opportunitydetail_form.msg.Opportunity_contact.0}}</span>
+                         </p>
+                                <p id="login-form-opportunitycustomer">
+                                  <label for="opportunitycustomer">客户</label>
+                                     {{ opportunitydetail_form.Opportunity_customer }}
+                                     <span style="color: coral">{{ opportunitydetail_form.msg.Opportunity_customer.0}}</span>
+                         </p>
+						    <p id="login-form-datacreator">
+						      <label for="datacreator">创建人</label>
+						      {{ opportunitydetail_form.Data_creator }}
+                                 <span style="color: coral">{{ opportunitydetail_form.msg.Data_creator.0}}</span>
+						    </p>
+                              <p id="login-form-dataowner">
+						      <label for="dataowner">拥有人</label>
+						      {{ opportunitydetail_form.Data_owner }}
+                                 <span style="color: coral">{{ opportunitydetail_form.msg.Data_owner.0}}</span>
+						    </p>
+                            <p id="login-form-dataapprover">
+						      <label for="dataapprover">审批人</label>
+						      {{ opportunitydetail_form.Data_approver }}
+                                 <span style="color: coral">{{ opportunitydetail_form.msg.Data_approver.0}}</span>
+						    </p>
+						    <div class="remember">
+                                 {% for error in  msg %}
+                                    <span style="color: coral">{{ error }}</span>
+                                {% endfor %}
+							    <input type="submit" name="Submit" class="button" value="保存"><div class="clear"></div>
+							 </div>
+						  </fieldset>
+					</div>
+			      </div>
+				</div>
+				<div class="clear"></div>
+			  </div> <!-- md-6 -->
+             </form>
+			</div>
+		  </div>
+         </div> <!-- end main -->
+    {% include "nav-footer.html" %}
+</body>
+</html>

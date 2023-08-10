@@ -1,0 +1,208 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<title>Thinkin PSM Website  | Workflow Detail</title>
+<link href="/static/base/static/css/bootstrap.css" rel='stylesheet' type='text/css' />
+<link href="/static/base/static/css/style.css" rel='stylesheet' type='text/css' />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+<script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
+<script src="/static/base/static/jsweb/jquery.min.js"></script>
+<!-- grid-slider -->
+<script type="text/javascript" src="/static/base/static/jsweb/jquery.mousewheel.js"></script>
+<script type="text/javascript" src="/static/base/static/jsweb/jquery.contentcarousel.js"></script>
+<!-- //grid-slider -->
+<!---calender-style---->
+<link rel="stylesheet" href="/static/base/static/css/jquery-ui.css" />
+<!---//calender-style---->
+</head>
+<body>
+<!--start menu-->
+	{% include "nav-top.html" %}
+    <!--start menu-->
+ <div class="main">
+         {% for requesttop in requesttop_list %}
+       		<div class="about_banner_img"><img src="{{ requesttop.image }}" class="img-responsive" alt=""/>
+	   		</div>
+		    <div class="about_banner_wrap">
+      	        <h1 class="m_11">{{ requesttop.subject }}</h1>
+		    </div>
+         {% endfor %}
+          <div class="login_top">
+          	<div class="container">
+             <form action="/requestdetailedit/?dummy_id={{ dummy_id }}" method="post" name="requestdetail_form" id="requestdetail_form" enctype="multipart/form-data">
+             {% csrf_token %}
+			  <div class="col-md-6">
+				 <div class="login-page">
+					<h4 class="title">基本信息</h4>
+                     <div id="requestbox1" class="loginbox">
+                         <fieldset class="input">
+                         <div>
+                         <p id="login-form-Data_id">
+                                  <label for="Data_id">ID</label>
+                                     {{ requestdetail_form.Data_id }}
+                                     <span style="color: coral">{{ requestdetail_form.msg.Data_id.0}}</span>
+                         </p>
+                         </div>
+                          <div>
+                          <p id="login-form-Request_date">
+                                  <label for="Request_date">日期</label>
+                                     {{ requestdetail_form.Request_date }}
+                                     <span style="color: coral">{{ requestdetail_form.msg.Request_date.0}}</span>
+                         </p>
+                             </div>
+                         <div>
+                         <p id="login-form-Dummy_id">
+                                  <label for="Dummy_id">流水号</label>
+                                     {{ requestdetail_form.Dummy_id }}
+                                     <span style="color: coral">{{ requestdetail_form.msg.Dummy_id.0}}</span>
+                         </p>
+                             </div>
+                         <div>
+                         <p id="login-form-Request_desc">
+                                  <label for="Request_desc">说明</label>
+                                     {{ requestdetail_form.Request_desc }}
+                                     <span style="color: coral">{{ requestdetail_form.msg.Request_desc.0}}</span>
+                         </p>
+                             </div>
+
+
+                             <div>
+                               <p id="login-form-Request_initdate">
+                                  <label for="Request_initdate">开始日期</label>
+                                     {{ requestdetail_form.Request_initdate }}
+                                     <span style="color: coral">{{ requestdetail_form.msg.Request_initdate.0}}</span>
+                         </p>
+                             </div>
+                         <div>
+                               <p id="login-form-Request_inittime">
+                                  <label for="Request_inittime">开始时间</label>
+                                     {{ requestdetail_form.Request_inittime }}
+                                     <span style="color: coral">{{ requestdetail_form.msg.Request_inittime.0}}</span>
+                         </p>
+                         </div>
+                             <div>
+                                   <p id="login-form-Request_enddate">
+                                  <label for="Request_enddate">结束日期</label>
+                                     {{ requestdetail_form.Request_enddate }}
+                                     <span style="color: coral">{{ requestdetail_form.msg.Request_enddate.0}}</span>
+                         </p>
+                           </div>
+                             <div>
+                               <p id="login-form-Request_endtime">
+                                  <label for="Request_endtime">结束时间</label>
+                                     {{ requestdetail_form.Request_endtime }}
+                                     <span style="color: coral">{{ requestdetail_form.msg.Request_endtime.0}}</span>
+                         </p>
+                                 </div>
+                             <div>
+                            <p id="login-form-Request_comments">
+                                  <label for="Request_comments">备注</label>
+                                     {{ requestdetail_form.Request_comments }}
+                                     <span style="color: coral">{{ requestdetail_form.msg.Request_comments.0}}</span>
+                         </p>
+                                 </div>
+                             <div>
+                               <p id="login-form-Request_status">
+                                  <label for="Request_status">状态</label>
+                                     {{ requestdetail_form.Request_status }}
+                                     <span style="color: coral">{{ requestdetail_form.msg.Request_status.0}}</span>
+                         </p>
+                                 </div>
+	                    </fieldset>
+                     </div>
+                 </div>
+					 <div class="clear"></div>
+				</div> <!-- wnd md-6 -->
+				<div class="col-md-6">
+				 <div class="login-page">
+				  <div class="login-title">
+	           		<h4 class="title">流程信息</h4>
+                  <div id="requestbox2" class="loginbox">
+						  <fieldset class="input">
+                           <div>
+						    <p id="login-form-Data_owner">
+						      <label for="Data_owner">拥有人</label>
+						         {{ requestdetail_form.Data_owner }}
+                                 <span style="color: coral">{{ requestdetail_form.msg.Data_owner.0}}</span>
+						    </p>
+                          </div>
+                             <div>
+						    <p id="login-form-Data_creator">
+						      <label for="Data_creator">创建人</label>
+						      {{ requestdetail_form.Data_creator }}
+                                 <span style="color: coral">{{ requestdetail_form.msg.Data_creator.0}}</span>
+						    </p>
+                             </div>
+                             <div>
+                              <p id="login-form-Data_approver">
+						      <label for="Data_approver">审批人</label>
+						      {{ requestdetail_form.Data_approver }}
+                                 <span style="color: coral">{{ requestdetail_form.msg.Data_approver.0}}</span>
+						    </p>
+                             </div>
+                             <div>
+                              <p id="login-form-Data_processor">
+						      <label for="Data_processor">处理人</label>
+						      {{ requestdetail_form.Data_processor }}
+                                 <span style="color: coral">{{ requestdetail_form.msg.Data_processor.0}}</span>
+						    </p>
+                             </div>
+                             <div>
+                            <p id="login-form-Data_realizer">
+						      <label for="Data_realizer">实现人</label>
+						      {{ requestdetail_form.Data_realizer }}
+                                 <span style="color: coral">{{ requestdetail_form.msg.Data_realizer.0}}</span>
+						    </p>
+                             </div>
+						  </fieldset>
+                            <h4 class="title">关联信息</h4>
+						  <fieldset class="input">
+                             <div>
+                          <p id="login-form-Request_mainresource">
+						      <label for="Request_mainresource">主资源</label>
+						      {{ requestdetail_form.Request_mainresource }}
+                                 <span style="color: coral">{{ requestdetail_form.msg.Request_mainresource.0}}</span>
+						    </p>
+                             </div>
+                             <div>
+                          <p id="login-form-Request_contact">
+						      <label for="Request_contact">联系人</label>
+						      {{ requestdetail_form.Request_contact }}
+                                 <span style="color: coral">{{ requestdetail_form.msg.Request_contact.0}}</span>
+						    </p>
+                             </div>
+                             <div>
+                          <p id="login-form-Request_customer">
+						      <label for="Request_customer">客户</label>
+						      {{ requestdetail_form.Request_customer }}
+                                 <span style="color: coral">{{ requestdetail_form.msg.Request_customer.0}}</span>
+						    </p>
+                             </div>
+                             <div>
+                          <p id="login-form-Request_opportunity">
+						      <label for="Request_opportunity">商机</label>
+						      {{ requestdetail_form.Request_opportunity }}
+                                 <span style="color: coral">{{ requestdetail_form.msg.Request_opportunity.0}}</span>
+						    </p>
+                             </div>
+						    <div class="remember">
+                                 {% for error in  msg %}
+                                    <span style="color: coral">{{ error }}</span>
+                                {% endfor %}
+							    <input type="submit" name="Submit" class="button" value="保存"><div class="clear"></div>
+							 </div>
+						  </fieldset>
+                  </div>
+					</div>
+			      </div>
+				<div class="clear"></div>
+			  </div> <!-- md-6 -->
+             </form>
+			</div>
+		  </div>
+         </div> <!-- end main -->
+    {% include "nav-footer.html" %}
+</body>
+</html>

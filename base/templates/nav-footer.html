@@ -1,0 +1,31 @@
+<div class="footer-bottom">
+		   <div class="container">
+		 	 <div class="row section group">
+				<div class="col-md-4">
+					<ul class="list">
+                      {% if request.user.is_authenticated %}
+						<h4 class="m_7">导航</h4>
+                          <li><a href="/">首页</a></li>
+						<li><a href="/resource/">资源</a></li>
+						<li><a href="/jobs/">服务</a></li>
+						<li><a href="/about/">关于我们</a></li>
+                      {% else %}
+                        <h4 class="m_7">导航</h4>
+                          <li><a href="/">首页</a></li>
+                        <li><a href="/register/">注册</a></li>
+			            <li class="active"><a href="/login/">登录</a></li>
+                      {%  endif %}
+					</ul>
+				</div>
+				<div class="clear"></div>
+			 </div><!-- end row section group -->
+		   </div><!-- end container -->
+		 </div> <!-- end footer-bottom -->
+		 <div class="copyright">
+		   <div class="container">
+		    	<div class="copy">
+		        <p>© 2023 Thinkin Consulting Co. <a href="http://www.thinkinconsulting.com" target="_blank" title="Thinkin">服务网站</a></p>
+		    	</div>
+		    	<div class="clear"></div>
+		   </div>
+	     </div> <!-- end copyright -->

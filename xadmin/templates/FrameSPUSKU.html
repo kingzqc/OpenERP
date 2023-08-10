@@ -1,0 +1,186 @@
+{% extends 'xadmin/base_site.html' %}
+{% load i18n l10n %}
+
+
+{% block content %}
+    <title> 商品笛卡尔积方法演示 </title>
+<h1> 镜架SPU SKU  Demo 页面</h1>
+
+        <style>
+            input{
+                width: 50px;
+                height: 35px;
+            }
+            .checked{
+                background: orange;
+            }
+        </style>
+    <body>
+        <div class="container">
+              <div class="row">
+                <h5>商品SPU:</h5>
+                <input type="button" value="22222" />
+                <input type="button" value="33333" />
+                <input type="button" value="44444"/>
+                <input type="button" value="55555"/>
+
+            </div>
+
+            <div class="row">
+                <h5>规格:</h5>
+                <input type="button" value="-"/>
+                <input type="button" value="Male"/>
+                <input type="button" value="Female"/>
+                <input type="button" value="Kids"/>
+            </div>
+
+            <div class="row">
+                <h5>Color:</h5>
+                <input type="button" value="-"/>
+                <input type="button" value="Black"/>
+                <input type="button" value="Brown"/>
+                <input type="button" value="Gray"/>
+                <input type="button" value="Pink"/>
+                <input type="button" value="Green"/>
+                <input type="button" value="Orange"/>
+            </div>
+            <div class="row">
+                <h5>FrameTpe:</h5>
+                <input type="button" value="Full"/>
+                <input type="button" value="Semi"/>
+                <input type="button" value="Rimless"/>
+            </div>
+          </div>
+        <div>
+         <h3>SKU 列表： </h3>
+            <div class="box">
+
+            </div>
+        </div>
+        <script src="jquery-3.2.1.min.js"></script>
+        <script type="text/javascript">
+            (function(){
+                //两个数组的笛卡尔积
+                var Dicar = function(a,b){
+                    var ret=[];
+                    for(var i=0;i<a.length;i++){
+                        for(var j=0;j<b.length;j++){
+                        ret.push(multi(a[i],b[j]));
+                        }
+                    }
+                    return ret;
+                }
+                var multi = function(a,b){
+                    if(!(a instanceof Array))
+                        a = [a];
+                    var ret = Array.call(null,a);
+                    ret.push(b);
+                    return ret;
+                }
+                //递归求笛卡尔最后结果
+                multiDicar = function(data){
+                    var len = data.length;
+                    if(len == 0) {
+                        return [];
+                    }else if(len == 1){
+                        return data[0];
+                    }else{
+                        var r=data[0];
+                        for(var i=1;i<len;i++){
+                            var s = Dicar(r,data[i])
+                            if(s.length>0){
+                                r=s;
+                            }
+                        }
+                        return r;
+                    }
+                }
+            })();
+
+
+            //给按钮添加选中取消标志
+            $(".container .row input").on("click",function(){
+                $(this).toggleClass("checked");
+            });
+
+
+            (function(){
+                //获取矩阵按钮
+                function getBtn(ele){
+                    var arr=[];
+                    var contain = $(ele);
+                    for(let i=0;i<contain.length;i++){
+                        arr.push($.makeArray(contain[i].children));
+                    }
+                    return arr;
+                }
+                //生成二维数组
+                var data = getBtn(".container .row");
+
+                //判断点击的元素是否在二维数组中
+                function getIndex(ele,map){
+                    var res=[];
+                    for(let i=0;i<map.length;i++){
+                        for(let j=0;j<map[i].length;j++){
+                            if(map[i][j] == ele){
+                                res = [i,j];
+                            }
+                        }
+                    }
+                    return res;
+                }
+
+               //生成结果二维数组
+                var checked=[];
+                for(let i = 0;i<data.length;i++){
+                    checked[i] = [];
+                }
+
+                //处理结果二维数组中的断层
+                //如果有中间一行没数据，就截断阵列
+                function deal(checked){
+                    if(checked[0].length == 0){
+                        return [[]]
+                    }
+                    for(let i=0;i<checked.length;i++){
+                        if(checked[i].length == 0){
+                            return checked.slice(0,i);
+                        }
+                    }
+                    return checked;
+                }
+
+                //删除数组的元素
+                function removeByValue(arr, val) {
+                  for(var i=0; i<arr.length; i++) {
+                    if(arr[i] == val) {
+                      arr.splice(i, 1);
+                      break;
+                    }
+                  }
+                }
+
+                //绑定点击事件
+                $(".container .row input").on("click",function(){
+                    $(".box").empty();
+                    var _this=$(this);
+                    //判断在哪行那列
+                    var res = getIndex(_this[0],data);
+
+                    //判断是否是取消
+                    //如果数据已经存在，就把它删除 ，bug在于按钮的文字不能重复
+                    if(($.inArray(_this.val(),checked[res[0]])) !==-1){
+                        removeByValue(checked[res[0]],_this.val());
+                    }else{
+                        checked[res[0]].push(_this.val());
+                    }
+                    //做笛卡尔积的结果
+                    var r = multiDicar(deal(checked));
+                    for(var i=0;i<r.length;i++){
+                        $(".box").append("("+r[i]+")"+"<br>")
+                    }
+                })
+            })();
+        </script>
+    </body>
+{% endblock %}

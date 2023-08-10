@@ -1,0 +1,115 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<title>Thinkin PSM Website  | Customer Detail</title>
+<link href="/static/base/static/css/bootstrap.css" rel='stylesheet' type='text/css' />
+<link href="/static/base/static/css/style.css" rel='stylesheet' type='text/css' />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+<script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
+<script src="/static/base/static/jsweb/jquery.min.js"></script>
+<!-- grid-slider -->
+<script type="text/javascript" src="/static/base/static/jsweb/jquery.mousewheel.js"></script>
+<script type="text/javascript" src="/static/base/static/jsweb/jquery.contentcarousel.js"></script>
+<!-- //grid-slider -->
+<!---calender-style---->
+<link rel="stylesheet" href="/static/base/static/css/jquery-ui.css" />
+<!---//calender-style---->
+</head>
+<body>
+<!--start menu-->
+	{% include "nav-top.html" %}
+    <!--start menu-->
+ <div class="main">
+         {% for customertop in customertop_list %}
+       		<div class="about_banner_img"><img src="{{ customertop.image }}" class="img-responsive" alt=""/>
+	   		</div>
+		    <div class="about_banner_wrap">
+      	        <h1 class="m_11">{{ customertop.subject }}</h1>
+		    </div>
+         {% endfor %}
+          <div class="login_top">
+          	<div class="container">
+             <form action="/customerdetailedit/?data_id={{ customer_id }}" method="post" name="customerdetail_form" id="customerdetail_form" enctype="multipart/form-data">
+             {% csrf_token %}
+			  <div class="col-md-6">
+				 <div class="login-page">
+					<h4 class="title">基本信息{{ customerdetail_form.mode }}{{ customerdetail_form.nowuser }}</h4>
+                     <div id="loginbox" class="loginbox">
+                         <fieldset class="input">
+                         <p id="login-form-customercode">
+                                  <label for="customercode">代码</label>
+                                     {{ customerdetail_form.Customer_code }}
+                                     <span style="color: coral">{{ customerdetail_form.msg.Customer_code.0}}</span>
+                         </p>
+                         <p id="login-form-customername">
+                                  <label for="customername">名称</label>
+                                     {{ customerdetail_form.Customer_name }}
+                                     <span style="color: coral">{{ customerdetail_form.msg.Customer_name.0}}</span>
+                         </p>
+                         <p id="login-form-customersource">
+                                  <label for="customersource">来源</label>
+                                     {{ customerdetail_form.Customer_source }}
+                                     <span style="color: coral">{{ customerdetail_form.msg.Customer_source.0}}</span>
+                         </p>
+                          <p id="login-form-customeraddress">
+                                  <label for="customeraddress">地址</label>
+                                     {{ customerdetail_form.Customer_address }}
+                                     <span style="color: coral">{{ customerdetail_form.msg.Customer_address.0}}</span>
+                         </p>
+                            <p id="login-form-customercontact1">
+                                  <label for="customercontact1">联系人1</label>
+                                     {{ customerdetail_form.Customer_contact1 }}
+                                     <span style="color: coral">{{ customerdetail_form.msg.Customer_contact1.0}}</span>
+                         </p>
+                                <p id="login-form-customercontact2">
+                                  <label for="customercontact2">联系人2</label>
+                                     {{ customerdetail_form.Customer_contact2 }}
+                                     <span style="color: coral">{{ customerdetail_form.msg.Customer_contact2.0}}</span>
+                         </p>
+	                    </fieldset>
+                     </div>
+					 <div class="clear"></div>
+				  </div>
+				</div> <!-- wnd md-6 -->
+				<div class="col-md-6">
+				 <div class="login-page">
+				  <div class="login-title">
+	           		<h4 class="title">附加信息</h4>
+					<div id="loginbox" class="loginbox">
+						  <fieldset class="input">
+						    <p id="login-form-customerstatus">
+						      <label for="customerstatus">状态</label>
+						         {{ customerdetail_form.Customer_status }}
+                                 <span style="color: coral">{{ customerdetail_form.msg.Customer_status.0}}</span>
+						    </p>
+						    <p id="login-form-datacreator">
+						      <label for="datacreator">创建人</label>
+						      {{ customerdetail_form.Data_creator }}
+                                 <span style="color: coral">{{ customerdetail_form.msg.Data_creator.0}}</span>
+						    </p>
+                              <p id="login-form-dataowner">
+						      <label for="dataowner">拥有人</label>
+						      {{ customerdetail_form.Data_owner }}
+                                 <span style="color: coral">{{ customerdetail_form.msg.Data_owner.0}}</span>
+						    </p>
+						    <div class="remember">
+                                 {% for error in  msg %}
+                                    <span style="color: coral">{{ error }}</span>
+                                {% endfor %}
+							    <input type="submit" name="Submit" class="button" value="保存"><div class="clear"></div>
+							 </div>
+						  </fieldset>
+					</div>
+			      </div>
+				</div>
+				<div class="clear"></div>
+			  </div> <!-- md-6 -->
+             </form>
+			</div>
+		  </div>
+         </div> <!-- end main -->
+    {% include "nav-footer.html" %}
+</body>
+</html>

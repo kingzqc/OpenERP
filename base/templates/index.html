@@ -1,0 +1,73 @@
+
+<!DOCTYPE HTML>
+<html>
+<head>
+<title> Thinkin PSM Website | Home</title>
+<link href="/static/base/static/css/bootstrap.css" rel='stylesheet' type='text/css' />
+<link href="/static/base/static/css/style.css" rel='stylesheet' type='text/css' />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+<script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
+<!--<link href="css/style.css" rel="stylesheet" type="text/css" media="all" />-->
+<script src="/static/base/static/jsweb/jquery.min.js"></script>
+<script type="text/javascript">
+		jQuery(document).ready(function($) {
+			$(".scroll").click(function(event){		
+				event.preventDefault();
+				$('html,body').animate({scrollTop:$(this.hash).offset().top},1200);
+			});
+		});
+</script>
+<!-- grid-slider -->
+<script type="text/javascript" src="/static/base/static/jsweb/jquery.mousewheel.js"></script>
+<script type="text/javascript" src="/static/base/static/jsweb/jquery.contentcarousel.js"></script>
+<script type="text/javascript" src="/static/base/static/jsweb/jquery.easing.1.3.js"></script>
+<!-- //grid-slider -->
+</head>
+<body>
+	<!--start menu-->
+	{% include "nav-top.html" %}
+    <!--start menu-->
+	 <div class="main">
+	 	 <div class="container">
+			<!-- start content-top -->
+			<div class="row content-top">
+                {% for typetop in typetop_list %}
+				 <div class="col-md-5">
+				  <img src="{{ typetop.image }}" class="img-responsive" alt=""/>
+			     </div>
+				 <div class="col-md-7 content_left_text">
+				   <h3>{{ typetop.brief }}</h3>
+				   <p>{{ typetop.detail }}</p>
+				 </div>
+                {% endfor %}
+            </div><!-- end content-top -->
+		 </div><!-- container-->
+
+		<div class="container">
+		    <div class="row content-middle">
+		      <!-- start content-middle -->
+              {% for contenttype in typedetail_list %}
+	 	    	<div class="col-md-4"><a href="/topicdetail/?topic={{ contenttype.urlkey }}">
+	 	    		<ul class="spinning">
+	 	    			<li class="live">{{ contenttype.brief }}</li>
+	 	    			<li class="room">{{ contenttype.tag }}</li>
+	 	    			<div class="clear"></div>	
+	 	    		</ul>
+					 <div class="view view-fifth">
+				  	   <img src="{{ contenttype.image }}" class="img-responsive" alt=""/>
+					      <div class="mask">
+	                       	<div class="info">详情>></div>
+			              </div>
+					 </div>
+			     </a>
+				</div>
+                {% endfor %}
+				<div class="clear"></div>
+		    </div> <!-- end content-middle -->
+        </div> <!-- end container-->
+	 </div> <!-- end main -->
+   {% include "nav-footer.html" %}
+</body>
+</html>

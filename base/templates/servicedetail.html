@@ -1,0 +1,143 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<title>Thinkin PSM Website  | Service Detail</title>
+<link href="/static/base/static/css/bootstrap.css" rel='stylesheet' type='text/css' />
+<link href="/static/base/static/css/style.css" rel='stylesheet' type='text/css' />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+<script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
+<script src="/static/base/static/jsweb/jquery.min.js"></script>
+<!-- grid-slider -->
+<script type="text/javascript" src="/static/base/static/jsweb/jquery.mousewheel.js"></script>
+<script type="text/javascript" src="/static/base/static/jsweb/jquery.contentcarousel.js"></script>
+<!-- //grid-slider -->
+<!---calender-style---->
+<link rel="stylesheet" href="/static/base/static/css/jquery-ui.css" />
+<!---//calender-style---->
+</head>
+<body>
+<!--start menu-->
+	{% include "nav-top.html" %}
+    <!--start menu-->
+ <div class="main">
+         {% for servicetop in servicetop_list %}
+       		<div class="about_banner_img"><img src="{{ servicetop.image }}" class="img-responsive" alt=""/>
+	   		</div>
+		    <div class="about_banner_wrap">
+      	        <h1 class="m_11">{{ servicetop.subject }}</h1>
+		    </div>
+         {% endfor %}
+          <div class="login_top">
+          	<div class="container">
+             <form action="/servicedetailedit/?service_dummy={{ job_dummy }}" method="post" name="servicedetail_form" id="servicedetail_form" enctype="multipart/form-data">
+             {% csrf_token %}
+			  <div class="col-md-6">
+				 <div class="login-page">
+					<h4 class="title">基本信息{{ servicedetail_form.mode }}{{ servicedetail_form.nowuser}}</h4>
+                     <div id="loginbox" class="loginbox">
+                         <fieldset class="input">
+                                    {% if servicedetail_form.image  %}
+                                        <p id="login-form-image">
+                                        <img src="{{ imageurl }}" class="img-rounded img-circle" alt="" style="width: 240px; height: 240px">
+                                        <a style="display: none">{{ imageurl }}</a>
+                                        </p>
+                                        <p>
+                                        <label>更换图片*</label>
+                                            {{ servicedetail_form.image }}
+                                            <span style="color: coral">{{ msg.image.0 }}</span>
+                                        </p>
+                                    {% else %}
+                                        <p id="login-form-image">
+                                        <label>添加图片*</label>
+                                           {{ servicedetail_form.image }}
+                                         <span style="color: coral">{{ msg.image.0 }}</span>
+                                        </p>
+                                    {% endif %}
+                         <p id="login-form-onwebpage">
+                                  <label for="onwebpage">网页展示</label>
+                                     {{ servicedetail_form.on_webpage }}
+                                     <span style="color: coral">{{ servicedetail_form.msg.on_webpage.0 }}</span>
+                         </p>
+                         <p id="login-form-code">
+                                  <label for="code">简称</label>
+                                     {{ servicedetail_form.job_code }}
+                                     <span style="color: coral">{{ servicedetail_form.msg.job_code.0 }}</span>
+                         </p>
+                         <p id="login-form-price">
+                                  <label for="price">价格</label>
+                                     {{ servicedetail_form.job_price }}
+                                     <span style="color: coral">{{ servicedetail_form.msg.job_price.0 }}</span>
+                         </p>
+                         <p id="login-form-type">
+						      <label for="type">类型</label>
+						         {{ servicedetail_form.job_type }}
+                                 <span style="color: coral">{{ servicedetail_form.msg.job_type.0}}</span>
+						    </p>
+						    <p id="login-form-contenttype">
+						      <label for="contenttype">分类</label>
+						      {{ servicedetail_form.job_contenttype }}
+                                 <span style="color: coral">{{ servicedetail_form.msg.job_contenttype.0}}</span>
+						    </p>
+                              <p id="login-form-resource">
+						      <label for="resource">关联用户</label>
+						      {{ servicedetail_form.job_resource }}
+                                 <span style="color: coral">{{ servicedetail_form.msg.job_resource.0}}</span>
+						    </p>
+                            <p id="login-form-owner">
+						      <label for="owner">所有者</label>
+						      {{ servicedetail_form.owner }}
+                                 <span style="color: coral">{{ servicedetail_form.msg.owner.0}}</span>
+						    </p>
+	                    </fieldset>
+                     </div>
+					 <div class="clear"></div>
+				  </div>
+				</div> <!-- wnd md-6 -->
+				<div class="col-md-6">
+				 <div class="login-page">
+				  <div class="login-title">
+	           		<h4 class="title">内容</h4>
+					<div id="loginbox" class="loginbox">
+						  <fieldset class="input">
+						     <p id="login-form-brief">
+                                  <label for="brief">摘要</label>
+                                     {{ servicedetail_form.job_brief }}
+                                     <span style="color: coral">{{ servicedetail_form.msg.job_brief.0 }}</span>
+                         </p>
+                          <p id="login-form-feature">
+                                  <label for="feature">特点</label>
+                                     {{ servicedetail_form.job_feature }}
+                                     <span style="color: coral">{{ servicedetail_form.msg.job_feature.0 }}</span>
+                         </p>
+                           <p id="login-form-target">
+                                  <label for="target">目标画像</label>
+                                     {{ servicedetail_form.job_target }}
+                                     <span style="color: coral">{{ servicedetail_form.msg.job_target.0 }}</span>
+                         </p>
+                         <p id="login-form-detail">
+                          <label for="detail">详情</label>
+                             {{ servicedetail_form.job_detail }}
+                             <span style="color: coral">{{ servicedetail_form.msg.job_detail.0 }}</span>
+                         </p>
+						    <div class="remember">
+                                 {% for error in  msg %}
+                                    <span style="color: coral">{{ error }}</span>
+                                {% endfor %}
+							    <input type="submit" name="Submit" class="button" value="保存"><div class="clear"></div>
+							 </div>
+						  </fieldset>
+
+					</div>
+			      </div>
+				</div>
+				<div class="clear"></div>
+			  </div> <!-- md-6 -->
+             </form>
+			</div>
+		  </div>
+         </div> <!-- end main -->
+    {% include "nav-footer.html" %}
+</body>
+</html>

@@ -1,0 +1,63 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<title>Thinkin PSM Website  | E_Content </title>
+<link href="/static/base/static/css/bootstrap.css" rel='stylesheet' type='text/css' />
+<link href="/static/base/static/css/style.css" rel='stylesheet' type='text/css' />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+<script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
+<script src="/static/base/static/jsweb/jquery.min.js"></script>
+<!-- grid-slider -->
+<script type="text/javascript" src="/static/base/static/jsweb/jquery.mousewheel.js"></script>
+<script type="text/javascript" src="/static/base/static/jsweb/jquery.contentcarousel.js"></script>
+<!-- //grid-slider -->
+<!---calender-style---->
+<link rel="stylesheet" href="/static/base/static/css/jquery-ui.css" />
+<!---//calender-style---->
+</head>
+<body>
+	<!--start menu-->
+	{% include "nav-top.html" %}
+    <!--start menu-->
+	 <div class="main">
+        <!-- start top -->
+     {% for topictop in topictop_list %}
+       		<div class="about_banner_img"><img src="{{ topictop.image }}" class="img-responsive" alt=""/>
+	   		</div>
+		 <div class="about_banner_wrap">
+      	    <h1 class="m_11">{{ topictop.subject }}</h1>
+		 </div>
+    {% endfor %}
+		 <div class="border">
+		 </div>
+        <!-- end top -->
+      	<div class="container">
+         {% for topicdetail in topicdetail_list %}
+		  <div class="row single-top">
+		  	   <div class="col-md-12">
+		  	     <div class="blog_single_grid">
+				  <ul class="links_blog">
+				  	<h3><a href="#">{{ topicdetail.nickname }}</a></h3>
+		  			<li><a href="#"><i class="blog_icon5"> </i><span>{{ topicdetail.docdate }}</span></a> <div class="clear"></div></li>
+		  			<li><a href="#"><i class="blog_icon6"> </i><span>{{ topicdetail.owner }}</span></a><div class="clear"></div></li>
+		  			<li><a href="#"><i class="blog_icon7"> </i><span>{{ topicdetail.interest }}</span></a><div class="clear"></div></li>
+		  			<li><a href="#"><i class="blog_icon8"> </i><span>{{ topicdetail.thumbup }}</span></a><div class="clear"></div></li>
+		  		  </ul>
+				  <img src="{{ topicdetail.image}}" class="img-responsive" alt=""/>
+				  <div class="blog_single_desc">
+				    <p class="m_16">{{ topicdetail.brief }}</p>
+				    <p class="m_17">{{ topicdetail.feature }}</p>
+				    <p class="m_16">{{ topicdetail.value }}</p>
+				    <p class="m_17">{{ topicdetail.summary }}</p>
+				  </div>
+			    </div>
+			   </div>
+          </div>
+          {% endfor %}
+        </div>
+          {% include "nav-footer.html" %}
+     </div>
+</body>
+</html>

@@ -1,0 +1,220 @@
+<!-- sample code -->
+<!-- view daily agenda modal start  -->
+    <div class="modal fade" id="editagendaModal" tabindex="-1" role="dialog" aria-labelledby="viewagendaModalLabel" aria-hidden="true" style="...">
+        <div class="modal-dialog" style="width: 1000px">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="viewagendaModalLabel">日程<span class="label label-default">资源：{{ form_data.resource }}</span></h4>
+                </div>
+               <div class="modal-body row col-md-12">
+                        <div class="form-group" >
+                         <label for="v_agenda_resource" class="col-lg-3 control-label">日期：{{ form_data.agendadate }}</label>
+                            <div class="col-lg-9">
+                                 <input name="v_agenda_date" type="number" class="form-control" id="v_agenda_date" onchange="changeagendadate(this);" />
+                            </div>
+                        </div>
+                    <!-- daily agenda form start -->
+                      <div class="row">
+                        <div class="col-xs-12">
+                            <div class="box box-solid">
+                                <div class="box-body">
+                                    <table class="table table-hover table-striped">
+                                        <thead>
+                                        <th>序号</th>
+                                        <th>开始时间</th>
+                                        <th>结束时间</th>
+                                        <th>时长</th>
+                                        <th>状态</th>
+                                        <th>操 作</th>
+                                        </thead>
+                                        <tbody>
+                                        {% for agenda in agendalist %}
+                                            <tr>
+                                                <td>{{ agenda.seq }}</td>
+                                                <td>{{ agenda.start_time }}</td>
+                                                <td>{{ agenda.end_time }}</td>
+                                                <td>{{ agenda.duration }}</td>
+                                                <td>{{ agenda.data_status }}</td>
+                                                <td>
+                                                    {% if agenda.data_status == 'OK' %}
+                                                     <button type="button" class="btn btn-info use_yes" onclick="javascript:window.location.href='{% url 'bookagendaline' %}?dummy_id=' + {{ agenda.data_id}};" data="{{ agenda.data_id }}">预约</button>
+                                                    {% endif %}
+                                                    {% if agenda.data_status == 'DN' %}
+                                                     <button type="button" class="btn btn-info use_no" onclick="javascript:window.location.href='{% url 'removeagendaline' %}?dummy_id=' + {{ agenda.data_id}};" data="{{ agenda.data_id }}">取消</button>
+                                                    {% endif %}
+                                                </td>
+                                            </tr>
+                                        {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div><!-- daily agenda form end -->
+
+                    <div class="modal-footer">
+                        <button type='button' class='btn btn-info edit_purchaseline' data="+ linelist[i].id +">改</button>
+                        <button type='button' class='btn btn-info delete_purchaseline' data="+ linelist[i].id +">删</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                        <button type="button" class="btn btn-primary" id="save_orderline">保存</button>
+                    </div>
+                    </div>
+              </div>
+            </div><!-- /.modal dialogue-->
+        </div>
+    </div>
+    <!-- view daily agenda modal end  -->
+<script>
+    $(".view_orderline").click(function () {
+            var line_id = $(this).attr("data");
+            var tbodyedit=window.document.getElementById("tbody-edit");
+
+            var url = "{% url 'agenda' %}";
+
+            $.ajax({
+                url: url,
+                type: 'post',
+                data: {
+                    "lineid": line_id,
+                },
+                dataType:"json",
+                success: function (arg) {
+                    if(arg.code == '0'){
+                        $("#v_line_id").val(arg.data.lineid);
+                        $("#v_line_skucode").val(arg.data.lineskucode);
+                        $("#v_line_purchaseqty").val(arg.data.linepurchaseqty);
+                        $("#v_line_purchasedate").val(arg.data.linepurchasedate);
+
+                        $("#v_line_plandeliverydate").val(arg.data.lineplandeliverydate);
+                        $("#v_line_instruction").val(arg.data.lineinstruction);
+
+                        $("#viewlineModal").modal('show');
+                    }else{
+                        layer.msg(arg.msg, {time: 3000, icon: 7});
+                    }
+                }
+            });
+        });
+    // save order line
+        $("#save_orderline").click(function () {
+            var e_line_id = $("#e_line_id").val();
+            var e_line_skucode = $("#e_line_skucode").val();
+            var e_line_purchaseqty = $("#e_line_purchaseqty").val();
+            var e_line_purchasedate = $("#e_line_purchasedate").val();
+            var e_line_plandeliverydate = $("#e_line_plandeliverydate").val();
+            var e_line_instruction = $("#e_line_instruction").val();
+            var a_vendorcode = $("#a_vendorcode").val();
+            var purchaseorder = $("#a_purchaseorder").val();
+
+            var url = "{% url 'agenda' %}";
+            //alert(e_contractnumber);
+            if(e_line_skucode == ''){
+                layer.msg('SKU不能为空', {time: 3000, icon: 7});
+                return
+            }
+            if(e_line_purchaseqty == ''){
+                layer.msg('数量不能为空', {time: 3000, icon: 7});
+                return
+            }
+
+            if(e_line_purchasedate == ''){
+                layer.msg('采购日期不能为空', {time: 3000, icon: 7});
+                return
+            }
+
+            if(e_line_plandeliverydate == ''){
+                layer.msg('计划交货日期不能为空', {time: 3000, icon: 7});
+                return
+            }
+
+            if(e_line_plandeliverydate < e_line_purchasedate){
+                layer.msg('日期范围有误', {time: 3000, icon: 7});
+                return
+            }
+            $.ajax({
+                url: url,
+                type: 'post',
+                data: {
+                    "line_id": e_line_id,
+                    "dummy_id": dummy_id,
+                    "line_skucode": e_line_skucode,
+                    "line_purchaseorder": purchaseorder,
+                    "line_purchaseqty": e_line_purchaseqty.toString(),
+                    "line_purchasedate": e_line_purchasedate.toString(),
+                    "line_plandeliverydate": e_line_plandeliverydate.toString(),
+                    "line_instruction": e_line_instruction,
+                    "vendorcode": a_vendorcode,
+                },
+                dataType:"json",
+                success: function (arg) {
+                    if(arg.code == '0'){
+                        $("#editagendaModal").modal('hide');
+                        layer.msg(arg.msg, {time: 3000, icon: 6});
+                        location.reload();
+                    }else{
+                        layer.msg(arg.msg, {time: 3000, icon: 7});
+                    }
+                }
+            });
+        });
+         //  ====  book agenga line 动态添加的事件使用如下的形式才起作业====
+        $(document).on('click','.book_agendaline',function () {
+            var lineid = $(this).attr("data");
+
+            var url = "{% url 'agenda' %}";
+            $.ajax({
+                url: url,
+                type: 'post',
+                data: {
+                    "id": lineid,
+                },
+                dataType:"json",
+                success: function (arg) {
+                    if(arg.code == '0'){
+                        $("#e_line_id").val(arg.data.id);
+                        $("#e_purchasesku").val(arg.data.purchasesku);
+                        $("#e_purchaseskuorgqty").val(arg.data.purchaseskuorgqty);
+                        $("#e_purchaseskuunit").val(arg.data.purchaseskuunit);
+                        $("#e_purchaseskuprice").val(arg.data.purchaseskuprice);
+                        $("#e_purchaseskudeldays").val(arg.data.purchaseskudeldays);
+                        $("#e_purchaseskucomment").val(arg.data.purchaseskucomment);
+
+                       $("#editagendaModal").modal('show');
+                    }else{
+                        layer.msg(arg.msg, {time: 3000, icon: 7});
+                    }
+                }
+            });
+        });
+        //  book agenda button end =====
+         //  ==== remove agenda line 动态添加的事件使用如下的形式才起作业====
+        $(document).on('click','.remove_agendaline',function () {
+            var lineid = $(this).attr("data");
+
+            var url = "{% url 'agenda' %}";
+            $.ajax({
+                url: url,
+                type: 'post',
+                data: {
+                    "id": lineid,
+                },
+                dataType:"json",
+                success: function (arg) {
+                    if(arg.code == '0'){
+                        $("#e_line_id").val(arg.data.id);
+                        $("#e_purchasesku").val(arg.data.purchasesku);
+                        $("#e_purchaseskuorgqty").val(arg.data.purchaseskuorgqty);
+                        $("#e_purchaseskuunit").val(arg.data.purchaseskuunit);
+                        $("#e_purchaseskuprice").val(arg.data.purchaseskuprice);
+                        $("#e_purchaseskudeldays").val(arg.data.purchaseskudeldays);
+                        $("#e_purchaseskucomment").val(arg.data.purchaseskucomment);
+
+                       $("#editagendaModal").modal('show');
+                    }else{
+                        layer.msg(arg.msg, {time: 3000, icon: 7});
+                    }
+                }
+            });
+        });
+        //  purchase line button end =====
+</script>
